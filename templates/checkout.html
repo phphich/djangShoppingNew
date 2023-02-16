@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load  static %}
+
+{% block content %}
+    <script>
+    var source = window.document.getElementsById("checkout")[0];
+    var specialElementHandlers = {
+        '#hidden-element': function (element, renderer) {
+            return true;
+        }
+    };
+    var doc = new jsPDF({
+        orientation: 'landscape'
+    });
+    doc.setFont("courier");
+    doc.setFontType("normal");
+    doc.setFontSize(24);
+    doc.setTextColor(100);
+    doc.fromHTML(elementHTML, 15, 15, {
+        'width': 170,
+        'elementHandlers': specialElementHandlers
+    });
+ </script>
+    <div id="checkout">
+    <div class="row">
+        <div class="col col-12 text-primary"><h1>Check your cart</h1></div>
+        <div class="lead text-dark">
+            <h4>
+                Date: {{ order.odate }}<br>
+                Customer: {{ order.customer.name }}, Address: {{ order.customer.address }}, Tel: {{ order.customer.tel }}
+            </h4>
+        </div>
+
+    </div>
+
+    <table class="table table-warning table-bordered">
+        <tr class="text-center text-primary">
+            <th class="col col-1" >Product ID</th>
+            <th class="col col-4">Name </th>
+            <th class="col col-3">Category </th>
+            <th class="col col-1">Price </th>
+            <th class="col col-1">Quantity </th>
+            <th class="col col-2">Total</th>
+        </tr>
+        <tr class="bg-white"><td class="bg-white"></td></tr>
+        {% for item in items %}
+             <tr class="bg-white">
+                 <td class="text-center">{{ item.product.pid }}  </td>
+                 <td class="text-start">{{ item.product.name }}</td>
+                 <td class="text-start">{{ item.product.category.name }}</td>
+                 <td class="text-end">{{ item.product.price }}</td>
+                 <td class="text-center">{{ item.quantity }}</td>
+                 <td class="text-end"><b>{{ item.total | floatformat:2 }}</b></td>
+             </tr>
+            <tr class="bg-white"><td class="bg-white"></td></tr>
+        {% endfor %}
+        <tr class="text-end text-dark">
+            <td colspan="5" class="bg-white"><h3>Items:</h3></td>
+            <td class="bg-white"><h3>{{ request.session.count }} </h3></td>
+        </tr>
+        <tr class="text-end text-dark">
+            <td colspan="5"  class="bg-white"><h3>Total: </h3></td>
+            <td  class="bg-white"><h3>{{ request.session.sum | floatformat:2}} </h3></td>
+        </tr>
+        <tr>
+            <td colspan="6" class="text-center bg-white">
+                <a href="{% url 'showBasket' %}" class="btn btn-secondary"><i class="fa fa-rotate-back"></i> Back </a>
+                <a href="{% url 'productShop' %}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Continues </a>
+                <a href="{% url 'order' %}" class="btn btn-success btn-lg"
+                onclick="return confirm('Are you sure to order?')"><i class="fa fa-check-double"></i> Order! </a>
+            </td>
+        </tr>
+    </table>
+    </div>
+      <form id="form1">
+        <div id="text">
+            Convert this text to PDF.
+        </div>
+        <input type="button" value="Print Div Contents" id="btnPrint" />
+      </form>
+{% endblock %}

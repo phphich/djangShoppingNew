@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load  static %}
+
+{% block content %}
+    <div id="summary">
+    <div class="row">
+        <div class="col col-12 text-primary"><h1>Order successfully...</h1></div>
+        <div class="lead text-success">
+            <h4>
+                Order ID: <b class="text-danger">#{{ order.oid }} </b>,  Date: {{ order.odate|date:"Y-m-d H:i:s"}} <br>
+                Customer: {{ order.customer.cid }} {{ order.customer.name }}, Address: {{ order.customer.address }}, Tel: {{ order.customer.tel }}
+            </h4>
+        </div>
+
+    </div>
+
+    <table class="table table-secondary table-bordered">
+        <tr class="text-center text-success">
+            <th class="col col-1" >Product ID</th>
+            <th class="col col-4">Name </th>
+            <th class="col col-3">Category </th>
+            <th class="col col-1">Price </th>
+            <th class="col col-1">Quantity </th>
+            <th class="col col-2">Total</th>
+        </tr>
+        <tr class="bg-white"><td class="bg-white"></td></tr>
+        {% for item in items %}
+             <tr class="bg-white">
+                 <td class="text-center">{{ item.product.pid }}  </td>
+                 <td class="text-start">{{ item.product.name }}</td>
+                 <td class="text-start">{{ item.product.category.name }}</td>
+                 <td class="text-end">{{ item.product.price }}</td>
+                 <td class="text-center">{{ item.quantity }}</td>
+                 <td class="text-end"><b>{{ item.total | floatformat:2}}</b></td>
+             </tr>
+            <tr class="bg-white"><td class="bg-white"></td></tr>
+        {% endfor %}
+        <tr class="text-end text-success">
+            <td colspan="5" class="bg-white"><h3>Items:</h3></td>
+            <td class="bg-white"><h3>{{ count }} </h3></td>
+        </tr>
+        <tr class="text-end text-success">
+            <td colspan="5"  class="bg-white"><h3>Total: </h3></td>
+            <td  class="bg-white"><h3>{{ sum | floatformat:2}} </h3></td>
+        </tr>
+        <tr>
+            <td colspan="6" class="text-center bg-white ">
+                <h4 class="text-success">Thank you for your order...</h4>
+                <a href="{% url 'home' %}" class="btn btn-primary"><i class="fa fa-home"></i> Home </a>
+            </td>
+        </tr>
+    </table>
+    </div>
+
+{% endblock %}

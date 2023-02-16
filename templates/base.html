@@ -1,0 +1,49 @@
+{% load static %}
+{% load fontawesome_6%}
+{% fontawesome_6_static %}
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="{% static 'stylesheets/bt502/css/bootstrap.css' %}">
+    <script src="{% static 'stylesheets/bt502/js/bootstrap.bundle.js'%}"></script>
+    <script type="text/javascript" src="{% static 'stylesheets/layout/scripts/jquery.min.js'%}"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+
+    <title>Shopping Djang</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col col-12 bg-primary text-white">
+                {% include 'header.html' %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-3 text-white" style="background-color: #b6d4fe;">
+                <br>
+                {% include 'menu.html' %}
+                <br>
+            </div>
+            <div class="col col-9 bg-white text-primary">
+                {% block info %}
+                    {%  if messages|length > 0 %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                {{ message.tags }}
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {%  endif %}
+                {% endblock %}
+
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

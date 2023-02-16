@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <br><br><br>
+    <div class="row">
+        <div class="col col-4 "> <br> </div>
+        <div class="col col-4 bg-primary">
+            <br>
+            <form method="POST" class="form-control">
+                {% csrf_token %}
+                <table class="table table-info">
+                    <tr class="bg-info"><td align="center" colspan="2"><h2>User Authentication </h2></td></tr>
+                    <tr><td width="40%">User Name</td>
+                        <td><input type="text" name="userName" value="{{ userName }}" required>
+                        </td></tr>
+                    <tr><td>Password</td><td><input type="password" name="userPass" value="" required>
+                    </td></tr>
+                    <tr> <td colspan="2" align="center">
+                        <input type="submit" value="Login" class="btn btn-primary">
+                        <input type="reset" value="Reset" class="btn btn-danger">
+                    </td></tr>
+                </table>
+            </form>
+        </div>
+        <div class="col col-4"> <br> </div>
+    </div>
+
+{% endblock %}

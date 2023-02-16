@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col col-6"><h1 class="text-primary">Shopping Now</h1></div>
+        <div class="col col-6 text-lg-end">
+            {% if 'count' in request.session %}
+                <a href="/showBasket" class="btn btn-outline-danger btn-lg">
+                    Your basket:
+                    <i class="fa fa-shopping-cart text-lg-center"></i>
+                    <span class="badge rounded-pill bg-danger">{{ request.session.count }}</span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <table class="table table-info">
+        <tr>
+        {% for product in products %}
+            <td> <img src="{% static product.picture %}" width="200px" height="18px" class="img img-thumbnail"></td>
+            <td class="text-primary"> Product ID:<b> {{ product.pid }} </b> <br>
+                Name: <b>{{ product.name }}</b> <br>
+                Category: <b> {{ product.category.name }} </b><br>
+                Price: <b>{{ product.price | floatformat:2}} </b> <br><br>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="pid" value="{{ product.pid }}">
+                    <input type="number" name="qnt" value="1" min="1" max="20" style="width:75px">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-shopping-cart"></i> Add to Cart
+                    </button>
+                </form>
+            </td>
+            <td class="bg-white"> <br> </td>
+            {% if forloop.counter|divisibleby:2 and not forloop.last %}
+                </tr>
+                <tr><td class="bg-white"> <br> </td> </tr>
+                <tr>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    </table>
+
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1 class="text-primary">Employee Listing</h1>
+    <table class="table table-primary table-striped table-hover table-bordered">
+        <tr class="bg-white text-primary text-center">
+            <th class="col col-2">Employee ID</th>
+            <th class="col col-3">Name </th>
+            <th class="col col-3">Birth Date </th>
+            <th class="col col-3">Position </th>            
+            <th class="col col-2">Manage <a href="{% url 'employeeNew' %}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> New </a></th>
+        </tr>
+        <tr class="bg-white text-primary text-center">
+            <td class="bg-white"></td>
+        </tr>
+
+    {% for employee in employees %}
+        <tr>
+            <td class="text-center">{{ employee.eid }}</td>
+            <td>{{ employee.name }}</td>
+            <td class="text-center">{{ employee.birthdate | date:"Y-m-d" }}</td>
+            <td class="text-center">{{ employee.position }}</td>
+            <td class="text-lg-center">
+                <a href="{% url 'employeeUpdate' employee.eid %}" class="btn btn-secondary"> <i class="fa fa-tools"> </i> </a>
+                <a href="{% url 'employeeDelete' employee.eid %}" class="btn btn-danger"> <i class="fa fa-trash"> </i> </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <br><br><br>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col col-6 text-start text-primary"><h1>Your basket</h1></div>
+        <div class="col col-6 text-end text-dark">
+            <h2> ( {{ request.session.count }} items, Total: {{ request.session.sum | floatformat:2 }} )
+            <a href="{% url 'clearBasket' %}" class="text-danger btn-lg" onclick="return confirm('ท่านต้องการยกเลิกรายการทั้งหมดในตระกร้า?')">
+                <i class="fa-solid fa-share-from-square"></i></a> </h2>
+        </div>
+    </div>
+    <table class="table table-success table-hover table-bordered">
+        <tr class="text-center text-primary">
+            <th class="col col-1">Product ID</th>
+            <th class="col col-3">Name </th>
+            <th class="col col-2">Category </th>
+            <th class="col col-1">Price </th>
+            <th class="col col-2">Quantity </th>
+            <th class="col col-2">Total</th>
+        </tr>
+        <tr><td class="bg-white"></td></tr>
+
+    {% for item in items %}
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="pid" value="{{ item.product.pid }}">
+            <tr class="bg-white">
+                <td class="text-center"> <img src="{% static item.product.picture %}" width="120px" height="100px" class="img img-thumbnail"><br>
+                    {{ item.product.pid }}
+                </td>
+                <td class="text-start">{{ item.product.name }}</td>
+                <td class="text-start">{{ item.product.category.name }}</td>
+                <td class="text-end">{{ item.product.price }}</td>
+
+                <td class="text-center">
+                    <input type="number" name="qnt" style="width:75px" value="{{ item.quantity }}" min="1" max="20">
+                    <button type="submit" class="btn btn-info" name="action" value="Update">
+                        <i class="fa fa-arrows-rotate"></i>
+                    </button>
+                    <button type="submit" class="btn btn-danger" name="action" value="Remove"
+                    onclick="return confirm('ท่านต้องการลบสินค้ารายการนี้ออกจากตระกร้า?')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+                <td class="text-end"><b>{{ item.total | floatformat:2}}</b></td>
+            </tr>
+        </form>
+        <tr><td class="bg-white"> </td> </tr>
+    {% endfor %}
+    </table>
+    <p class="text-center">
+        <a href="{% url 'productShop' %}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Continues </a>
+        <a href="{% url 'checkout' %}" class="btn btn-warning"><i class="fa fa-cash-register"></i> Check out</a>
+    </p>
+
+
+{% endblock %}

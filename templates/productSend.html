@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load  static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col col-12 text-primary"><h1>Product Send... </h1></div>
+        <div class="col col-12 text-success" >
+            <form method="POST" class="form-control text-success">
+                {% csrf_token %}
+                {{ form.as_table }} <br>
+                <p class="text-center">
+                     <button type="button" class="btn btn-secondary" onclick="history.back()">
+                        <i class="fa fa-rotate-back"></i> Back
+                    </button>
+                    <button type="submit" class="btn btn-lg btn-success" onclick="return confirm('โปรดยืนยันการบันทึกข้อมูลการส่งสินค้า')">
+                        <i class="fa-solid fa-truck-fast"></i> Save
+                    </button>
+                </p>
+            </form>
+        </div>
+
+        <div class="lead text-dark">
+            <h4>
+                Order ID: <b class="text-danger">#{{ order.oid }} </b>,  Date: {{ order.odate|date:"Y-m-d H:i:s"}} <br>
+                Customer: {{ order.customer.cid }} {{ order.customer.name }}, Address: {{ order.customer.address }}, Tel: {{ order.customer.tel }}<br>
+                Status: [<b class="text-danger">
+                    {% if order.status == '1' %}
+                        Wait for Confirm
+                    {% elif order.status == '2' %}
+                        Wait for Money Transfer
+                    {% elif order.status == '3' %}
+                         for Accept Money
+                    {% elif order.status == '4' %}
+                        Wait for Send
+                    {% else %}
+                        Complete
+                    {% endif %}
+                </b>]
+            </h4>
+        </div>
+
+    </div>
+
+    <table class="table table-secondary table-bordered">
+        <tr class="text-center text-dark">
+            <th class="col col-1" >Product ID</th>
+            <th class="col col-4">Name </th>
+            <th class="col col-3">Category </th>
+            <th class="col col-1">Price </th>
+            <th class="col col-1">Quantity </th>
+            <th class="col col-2">Total</th>
+        </tr>
+        <tr class="bg-white"><td class="bg-white"></td></tr>
+        {% for item in order.getOrderDetails %}
+             <tr class="bg-white">
+                 <td class="text-center">{{ item.product.pid }}  </td>
+                 <td class="text-start">{{ item.product.name }}</td>
+                 <td class="text-start">{{ item.product.category.name }}</td>
+                 <td class="text-end">{{ item.oprice }}</td>
+                 <td class="text-center">{{ item.quantity }}</td>
+                 <td class="text-end">{{ item.getTotal }}</td>
+             </tr>
+            <tr class="bg-white"><td class="bg-white"></td></tr>
+        {% endfor %}
+        <tr class="text-end text-dark">
+            <td colspan="5" class="bg-white"><h3>Items:</h3></td>
+            <td class="bg-white"><h3>{{ order.getCount }} </h3></td>
+        </tr>
+        <tr class="text-end text-dark">
+            <td colspan="5"  class="bg-white"><h3>Total: </h3></td>
+            <td  class="bg-white"><h3>{{ order.getTotal | floatformat:2 }} </h3></td>
+        </tr>
+
+    </table>
+
+{% endblock %}

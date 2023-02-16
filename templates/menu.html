@@ -1,0 +1,107 @@
+<div class="list-group">
+    <li class="list-group-item  list-group-item-primary bg-primary text-white">
+        <i class="fa-solid fa-bars"></i><b> Main:</b></li>
+    <a href="{% url 'home' %}" class="list-group-item list-group-item-action list-group-item-light text-primary">
+        <i class="fa fa-home"></i> Home </a>
+
+    {% if request.session.userId is None %}
+        <a href="{% url 'productShop' %}" class="list-group-item list-group-item-action list-group-item-light text-primary">
+            <i class="fa fa-shopping-cart"></i> Shopping Now</a>
+        <a href="{% url 'customerRegistration' %}" class="list-group-item list-group-item-action list-group-item-light text-primary">
+            <i class="fa-regular fa-id-card"></i> Customer Registration </a>
+    {% else %}
+        {% if request.session.userStatus == 'customer' %}
+            <a href="{% url 'productShop' %}" class="list-group-item list-group-item-action list-group-item-light text-primary">
+            <i class="fa fa-shopping-cart"></i> Shopping Now</a>
+            <a href="{% url 'showAllOrder' %}" class="list-group-item list-group-item-action list-group-item-light text-primary">
+                <i class="fa-solid fa-folder-tree"></i> Your Order</a>
+        {% else %}
+            <a href="{% url 'categoryList' %}" class="list-group-item list-group-item-action list-group-item-light text-primary">
+                <i class="fa fa-list"></i> Category Listing</a>
+            <a href="{% url 'productList' %}" class="list-group-item list-group-item-action list-group-item-light text-primary">
+                <i class="fa fa-list"></i> Product Listing</a>
+            <a href="{% url 'productListPage' 1 %}" class="list-group-item list-group-item-action list-group-item-light text-primary">
+                <i class="fa fa-list"></i> Product Listing (Pagination)</a>
+            <a href="{% url 'employeeList' %}" class="list-group-item list-group-item-action list-group-item-light text-primary">
+                <i class="fa fa-list"></i> Employee Listing</a>
+            <a href="{% url 'customerList' %}" class="list-group-item list-group-item-action list-group-item-light text-primary">
+                <i class="fa fa-list"></i> Customer Listing</a>
+            <a href="{% url 'showAllOrder' %}" class="list-group-item list-group-item-action list-group-item-light text-primary">
+                <i class="fa-solid fa-folder-tree"></i> Order in Progress</a>
+            <a href="{% url 'showHistoryOrder' %}" class="list-group-item list-group-item-action list-group-item-light text-secondary">
+                <i class="fa-solid fa-folder-tree"></i> History Order </a>
+        {% endif %}
+    {% endif %}
+</div>
+<br>
+<div class="list-group">
+    <li class="list-group-item  list-group-item-warning bg-warning text-secondary">
+        <i class="fa-solid fa-bars"></i><b> Test Utility:</b></li>
+    <a href="{% url 'sendLineMessage' %}" class="list-group-item list-group-item-action list-group-item-light text-success">
+        <i class="fab fa-line"></i> Send Message to Line Notify </a>
+    <a href="{% url 'sendLineSticker' %}" class="list-group-item list-group-item-action list-group-item-light text-success">
+        <i class="fab fa-line"></i> Send Sticker to Line Notify </a>
+    <a href="{% url 'sendLineImage' %}" class="list-group-item list-group-item-action list-group-item-light text-success">
+        <i class="fab fa-line"></i> Send Image to Line Notify </a>
+    <a href="{% url 'thaiPdfReport' %}" target="_blank"
+       class="list-group-item list-group-item-action list-group-item-light text-danger">
+        <i class="fas fa-file-pdf"></i> Thai Pdf Report </a>
+    <a href="{% url 'dashboardBarGraph' %}"
+       class="list-group-item list-group-item-action list-group-item-light text-primary">
+        <i class="fas fa-chart-bar"></i> Dashboard - Bar Graph </a>
+     <a href="{% url 'dashboardPieGraph' %}"
+       class="list-group-item list-group-item-action list-group-item-light text-primary">
+        <i class="fas fa-chart-pie"></i> Dashboard - Pie Graph </a>
+    <a href="{% url 'dashboardLineChart' %}"
+       class="list-group-item list-group-item-action list-group-item-light text-primary">
+         <i class="fas fa-chart-line"></i> Dashboard - Line Chart </a>
+    <a href="{% url 'dashboardAreaChart' %}"
+       class="list-group-item list-group-item-action list-group-item-light text-primary">
+        <i class="fas fa-chart-area"></i> Dashboard - Area Chart </a>
+    <a href="{% url 'dashboardAll' %}"
+       class="list-group-item list-group-item-action list-group-item-light text-primary">
+        <i class="fas fa-project-diagram"></i> Dashboard - Mutiple Chart </a>
+</div>
+<br>
+
+<div class="list-group">
+    <li class="list-group-item list-group-item-success bg-success text-white"><b>
+        <i class="fa-solid fa-users-gear"></i> User:</b></li>
+    <li class="list-group-item text-success">
+        {% if request.session.userId %}
+            <i class="fa-regular fa-id-card"></i> User ID: {{ request.session.userId }} <br>
+            <i class="fa-regular fa-user"></i> User Name: {{ request.session.userName }} <br>
+            <i class="fa-solid fa-hand-sparkles"></i> Status: {{ request.session.userStatus }} <br>
+            <hr class="text-secondary">
+            <div class="row">
+                <div class="col col-6 text-lg-start">
+                    {% if request.session.userStatus == 'customer' %}
+                        <a href="{% url 'customerUpdate' request.session.userId %}" class="text-lg-start text-secondary text-decoration-none">
+                        <i class="fa fa-gear"></i> Update Profile</a>
+                    {% else %}
+                        <a href="{% url 'userChangePassword'  %}" class="text-lg-start text-secondary text-decoration-none">
+                        <i class="fa fa-gear"></i> Change Password</a>
+                    {% endif %}
+                </div>
+                <div class="col col-6 text-end">
+                    <a href="{% url 'userLogout'%}" class="text-lg-end text-danger text-decoration-none">
+                        <i class="fa fa-sign-out-alt"></i> Log out</a>
+                </div>
+            </div>
+        {% else %}
+            <p class="text-end">
+                <a href="{% url 'userAuthen' %}" class="text-lg-end text-success">
+                     <i class="fa fa-sign-in-alt"></i>Log in</a>
+            </p>
+        {% endif %}
+    </li>
+</div>
+<br>
+
+<div class="list-group">
+    <li class="list-group-item list-group-item-warning text-dark"><b>
+        <i class="fa fa-user-secret"></i> Administrator:</b></li>
+     <a href="admin" class="list-group-item list-group-item-action list-group-item-light text-dark" target="_blank">
+        <i class="fa fa-toolbox"></i> Admin App.</a>
+</div>
+

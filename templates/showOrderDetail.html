@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load  static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col col-12 text-primary"><h1>Order Detail... </h1></div>
+        <div class="lead text-dark">
+            <h4>
+                Order ID: <b class="text-danger">#{{ order.oid }} </b>,  Date: {{ order.odate|date:"Y-m-d H:i:s"}} <br>
+                Customer: {{ order.customer.cid }} {{ order.customer.name }}, Address: {{ order.customer.address }}, Tel: {{ order.customer.tel }}<br>
+                Status: [<b class="text-danger">
+                    {{ order.getStatus }}
+                </b>]
+            </h4>
+        </div>
+
+    </div>
+
+    <table class="table table-secondary table-bordered">
+        <tr class="text-center text-dark">
+            <th class="col col-1" >Product ID</th>
+            <th class="col col-4">Name </th>
+            <th class="col col-3">Category </th>
+            <th class="col col-1">Price </th>
+            <th class="col col-1">Quantity </th>
+            <th class="col col-2">Total</th>
+        </tr>
+        <tr class="bg-white"><td class="bg-white"></td></tr>
+        {% for item in order.getOrderDetails %}
+             <tr class="bg-white">
+                 <td class="text-center">{{ item.product.pid }}  </td>
+                 <td class="text-start">{{ item.product.name }}</td>
+                 <td class="text-start">{{ item.product.category.name }}</td>
+                 <td class="text-end">{{ item.oprice }}</td>
+                 <td class="text-center">{{ item.quantity }}</td>
+                 <td class="text-end">{{ item.getTotal }}</td>
+             </tr>
+            <tr class="bg-white"><td class="bg-white"></td></tr>
+        {% endfor %}
+        <tr class="text-end text-dark">
+            <td colspan="5" class="bg-white"><h3>Items:</h3></td>
+            <td class="bg-white"><h3>{{ order.getCount }} </h3></td>
+        </tr>
+        <tr class="text-end text-dark">
+            <td colspan="5"  class="bg-white"><h3>Total: </h3></td>
+            <td  class="bg-white"><h3>{{ order.getTotal | floatformat:2 }} </h3></td>
+        </tr>
+
+        <tr>
+            <td colspan="6" class="text-center bg-white ">
+                <button class="btn btn-secondary" onclick="history.back()">
+                    <i class="fa fa-rotate-back"></i> Back
+                </button>
+                {% if request.session.userStatus == 'customer' %}
+                    {% if order.status == '1' %}
+                        <a href="" class="btn btn-lg btn-secondary disabled">
+                            <i class="fa-solid fa-hourglass-half"></i> Wait for Confirm </a>
+                    {% elif order.status == '2' %}
+                        <a href="{% url 'moneyTransfer' order.oid %}" class="btn btn-lg btn-primary">
+                            <i class="fa fa-money-check-dollar"></i> Money Transfer </a>
+                    {% elif order.status == '3' %}
+                        <a href="" class="btn btn-lg btn-secondary disabled">
+                            <i class="fa-solid fa-hourglass-half"></i> Wait for Money Accept </a>
+                    {% elif order.status == '4' %}
+                        <a href="" class="btn btn-lg btn-success disabled">
+                            <i class="fa-solid fa-hourglass-half"></i> Wait for Send Product </a>
+                    {% elif order.status == '5' %}
+                        <a href="" class="btn btn-lg btn-success disabled text-white">
+                            <i class="fa fa-flag"></i> Complete</a>
+                    {% endif %}
+                {% else %}
+                     {% if order.status == '1' %}
+                         <a href="{% url 'orderConfirm' order.oid %}" class="btn btn-lg btn-success"
+                           onclick="return confirm('ท่านยืนยันใบสั่งซื้อใบนี้?')">
+                            <i class="fa-solid fa-check"></i> Confirm </a>
+                         <a href="{% url 'orderReject' order.oid %}" class="btn btn-lg btn-danger">
+                            <i class="fa-solid fa-ban"></i> Reject </a>
+
+                    {% elif order.status == '2' %}
+                         <a href="" class="btn btn-lg btn-secondary disabled">
+                            <i class="fa fa-money-check-dollar"></i> Wait for Money Transfer </a>
+                    {% elif order.status == '3' %}
+                         <a href="{% url 'moneyAccept' order.oid %}" class="btn btn-lg btn-success"
+                           onclick="return confirm('ท่านยืนยันการโอนเงินของลูกค้าถูกต้อง?')">
+                            <i class="fa-solid fa-check"></i> Money Accept</a>
+                    {% elif order.status == '4' %}
+                        <a href="productSend" class="btn btn-lg btn-primary">
+                            <i class="fa-solid fa-truck-fast"></i> Product Send</a>
+                    {% elif order.status == '5' %}
+                        <a href="" class="btn btn-lg btn-success disabled text-white">
+                            <b><i class="fa fa-flag"></i> C o m p l e t e </b></a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Product Updating</h1>
+    <form method="POST" enctype="multipart/form-data" class="form form-control text-primary">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p class="text-center">
+            <a type="button" class="btn btn-secondary" onclick="history.back()">
+                 <i class="fa fa-rotate-back"></i> Back
+            </a>
+
+            <button type="submit" class="btn btn-lg btn-success">
+                 <i class="fa-solid fa-tools"></i> Update
+            </button>
+        </p>
+    </form>
+{% endblock %}

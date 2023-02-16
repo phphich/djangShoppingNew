@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load  static %}
+
+{% block content %}
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+    <div class="row">
+        {% if request.session.userStatus == 'customer' %}
+            <div class="col col-12 text-primary"><h1>Your Order...</h1></div>
+            <div class="lead text-dark">
+                <h4>
+                    Customer: {{ customer.cid }} {{ customer.name }}, Address: {{ customer.address }}, Tel: {{ customer.tel }}
+                </h4>
+            </div>
+        {% else %}
+            <div class="col col-12 text-primary"><h1>Order in Progress...</h1></div>
+        {% endif %}
+    </div>
+
+    <table class="table table-info table-bordered">
+        <tr class="text-center text-success text-center" >
+            <th class="col col-2" >Order ID</th>
+            <th class="col col-2">Date </th>
+            <th class="col col-1">Items </th>
+            <th class="col col-1">Total </th>
+            <th class="col col-4">Progress </th>
+            <th class="col col-2">Status </th>
+        </tr>
+        <tr class="bg-white"><td class="bg-white"></td></tr>
+        {% if orders.count == 0 %}
+            <tr class="bg-white">
+                <td colspan="6" class="text-center" >
+                    <b class="text-danger text-center">-- ยังไม่มีรายการสั่งซื้อใดๆ ของท่าน --</b>
+                </td>
+            </tr>
+        {% else %}
+            {% for order in orders %}
+                 <tr class="bg-white">
+                     <td class="text-center" >
+                         <a href="{% url 'showOrderDetail' order.oid %}" class="text-decoration-none">
+                             <i class="fa-regular fa-folder-open"></i>  {{ order.oid }} </a></td>
+                     <td class="text-center">{{ order.odate | date:"Y-m-d H:i:s" }}  </td>
+                     <td class="text-center">{{ order.getCount }}</td>
+                     <td class="text-end">{{ order.getTotal | floatformat:2 }}</td>
+                     <td class="text-start">
+                         {% if order.status == '1' %}
+                             <button class="btn  btn-success disabled"><i class="fa-solid fa-cart-shopping"></i>
+                                 <i class="fa-solid fa-check"></i></button>
+                             <button class="btn btn-secondary disabled"><i class="fa-regular fa-handshake"></i></button>
+                             <button class="btn  btn-secondary disabled"><i class="fa-solid fa-comments-dollar"></i></button>
+                             <button class="btn  btn-secondary disabled"><i class="fa-brands fa-btc"></i></button>
+                             <button class="btn  btn-secondary disabled"><i class="fa-solid fa-truck-fast"></i></button>
+                         {% elif order.status == '2' %}
+                             <button class="btn btn-success disabled"><i class="fa-solid fa-cart-shopping"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                             <button class="btn  btn-success disabled"><i class="fa-regular fa-handshake"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                             <button class="btn  btn-secondary disabled"><i class="fa-solid fa-comments-dollar"></i></button>
+                             <button class="btn  btn-secondary disabled"><i class="fa-brands fa-btc"></i></button>
+                             <button class="btn  btn-secondary disabled"><i class="fa-solid fa-truck-fast"></i></button>
+                         {% elif order.status == '3' %}
+                             <button class="btn  btn-success disabled"><i class="fa-solid fa-cart-shopping"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                             <button class="btn  btn-success disabled"><i class="fa-regular fa-handshake"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                             <button class="btn btn-success disabled"><i class="fa-solid fa-comments-dollar"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                             <button class="btn  btn-secondary disabled"><i class="fa-brands fa-btc"></i></button>
+                             <button class="btn  btn-secondary disabled"><i class="fa-solid fa-truck-fast"></i></button>
+                         {% elif order.status == '4' %}
+                             <button class="btn  btn-success disabled"><i class="fa-solid fa-cart-shopping"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                             <button class="btn  btn-success disabled"><i class="fa-regular fa-handshake"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                             <button class="btn  btn-success disabled"><i class="fa-solid fa-money-bill-trend-up"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                             <button class="btn  btn-success disabled"><i class="fa-brands fa-btc"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                             <button class="btn  btn-secondary disabled"><i class="fa-solid fa-truck-fast"></i></button>
+                         {% elif order.status == '5' %}
+                            <button class="btn  btn-success disabled"><i class="fa-solid fa-cart-shopping"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                            <button class="btn  btn-success disabled"><i class="fa-regular fa-handshake"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                            <button class="btn  btn-success disabled"><i class="fa-solid fa-comments-dollar"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                            <button class="btn  btn-success disabled"><i class="fa-brands fa-btc"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                            <button class="btn  btn-success disabled"><i class="fa-solid fa-truck-fast"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                         {% elif order.status == '6' %}
+                            <button class="btn  btn-danger disabled"><i class="fa-solid fa-cart-shopping"></i>
+                                <i class="fa-solid fa-ban"></i> </button>
+                          {% elif order.status == '7' %}
+                            <button class="btn  btn-success disabled"><i class="fa-solid fa-cart-shopping"></i>
+                                <i class="fa-solid fa-check"></i></button>
+                             <button class="btn  btn-danger disabled"> <i class="fa-regular fa-handshake"></i>
+                                <i class="fa-solid fa-ban"></i> </button>
+                         {% endif %}
+
+                     </td>
+                     <td class="text-center">
+                         {% if order.status == '1' %}
+                             <button class="btn btn-sm  btn-info disabled"><i class="fa-regular fa-hourglass-half"></i>
+                                 {{order.getStatus}}</button>
+                             {% if request.session.userStatus == 'customer' %}
+                                <a href="{% url 'orderCancel' order.oid %}" class="text-danger"> <i class="fa-solid fa-ban"></i> </a>
+                             {% endif %}
+                         {% elif order.status == '2' %}
+                             <button class="btn btn-sm  btn-info disabled"><i class="fa-regular fa-hourglass-half"></i>
+                                 {{order.getStatus}}</button>
+                         {% elif order.status == '3' %}
+                             <button class="btn btn-sm  btn-info disabled"><i class="fa-regular fa-hourglass-half"></i>
+                                 {{order.getStatus}}</button>
+                         {% elif order.status == '4' %}
+                             <button class="btn btn-sm  btn-info disabled"><i class="fa-regular fa-hourglass-half"></i>
+                                 {{order.getStatus}}</button>
+                         {% endif %}
+
+                         {% if request.session.userStatus == 'customer' %}
+                             {% if order.status == '5' %}
+                                 <button class="btn btn-sm  btn-light disabled text-success">
+                                     <i class="fa fa-flag"></i> <b> {{order.getStatus}} </b> </button>
+                             {% elif order.status == '6' %}
+                                 <button class="btn btn-sm  btn-light disabled text-danger">
+                                     <i class="fa-solid fa-ban"></i> <b> {{order.getStatus}}</b> </button>
+                             {% elif order.status == '7' %}
+                                 <button class="btn btn-sm  btn-light disabled text-danger">
+                                     <i class="fa-solid fa-ban"></i> <b> {{order.getStatus}} </b> </button>
+                             {% endif %}
+                        {% endif %}
+                     </td>
+                 </tr>
+                <tr class="bg-white"><td class="bg-white"></td></tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+
+{% endblock %}

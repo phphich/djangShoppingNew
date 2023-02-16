@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1 class="text-primary">Category Listing</h1>
+    <table class="table table-primary table-striped table-hover table-bordered">
+        <tr class="bg-white text-primary text-center">
+            <th class="col col-2">Category ID </th>
+            <th class="col col-3">Name </th>
+            <th class="col col-5">Desc </th>
+            <th class="col col-2">Manage <a href="{% url 'categoryNew' %}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> New </a></th>
+        </tr>
+
+    {% for category in categories %}
+        <tr>
+            <td class="text-center">{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <td>{{ category.desc }}</td>
+            <td class="text-lg-center">
+                <a href="{% url 'categoryUpdate' category.id %}" class="btn btn-secondary"> <i class="fa fa-tools"> </i> </a>
+                <a href="{% url 'categoryDelete' category.id %}" class="btn btn-danger"> <i class="fa fa-trash"> </i> </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <br><br><br>
+{% endblock %}

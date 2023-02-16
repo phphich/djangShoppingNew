@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h2 class="text-primary text-center">Dashboard สรุปข้อมูลสินค้า/การขาย</h2>
+    {% if chart %}
+        <div class="row text-center">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                {{ chart | safe }}
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+    {% else %}
+        <div class="row text-center">
+            <div class="col-md-5">
+                 {{ chart_bar | safe }}
+            </div>
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-5">
+                 {{ chart_pie | safe }}
+            </div>
+        </div>
+        <br>
+        <div class="row text-center">
+            <div class="col-md-5">
+                 {{ chart_line | safe }}
+            </div>
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-5">
+                 {{ chart_area | safe }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

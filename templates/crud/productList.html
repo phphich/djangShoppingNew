@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1 class="text-primary">Product Listing</h1>
+    <table class="table table-primary table-striped table-hover table-bordered">
+        <tr class="bg-white text-primary text-center">
+            <th class="col col-1">Poduct ID </th>
+            <th class="col col-3">Name </th>
+            <th class="col col-2">Category </th>
+            <th class="col col-1">Price </th>
+            <th class="col col-1">Net </th>
+            <th class="col col-2">Picture </th>
+            <th class="col col-1">Manage <a href="{% url 'productNew' %}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> New </a></th>
+        </tr>
+
+    {% for product in products %}
+        <tr>
+            <td class="text-center">{{ product.pid }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category.name }}</td>
+            <td class="text-end">{{ product.price | floatformat:2}}</td>
+            <td class="text-center">{{ product.net }}</td>
+            <td><img src="{% static product.picture%}" width="120px" height="100px" class="img img-thumbnail"></td>
+            <td class="text-lg-center">
+                <a href="{% url 'productUpdate' product.pid %}" class="btn btn-secondary"> <i class="fa fa-tools"> </i> </a>
+                <a href="{% url 'productDelete' product.pid %}" class="btn btn-danger"> <i class="fa fa-trash"> </i> </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <br><br><br>
+{% endblock %}

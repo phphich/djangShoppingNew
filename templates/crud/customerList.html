@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1 class="text-primary">Customer Listing</h1>
+    <table class="table table-primary table-striped table-hover table-bordered">
+        <tr class="bg-white text-primary text-center">
+            <th class="col col-2">Customer ID</th>
+            <th class="col col-3">Name </th>
+            <th class="col col-3">Address </th>
+            <th class="col col-2">Telephone </th>
+            <th class="col col-2">Manage </th>
+        </tr>
+        <tr class="bg-white text-primary text-center">
+            <td class="bg-white"></td>
+        </tr>
+
+    {% for customer in customers %}
+        <tr>
+            <td class="text-center">{{ customer.cid }}</td>
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.address }}</td>
+            <td class="text-center">{{ customer.tel}}</td>
+
+            <td class="text-lg-center">
+                <a href="{% url 'customerUpdate' customer.cid %}" class="btn btn-secondary"> <i class="fa fa-tools"> </i> </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <br><br><br>
+{% endblock %}

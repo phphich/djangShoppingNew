@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Category Deleting </h1>
+    <form method="POST" enctype="multipart/form-data" class="form form-control text-primary">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p class="text-center">
+            <button type="button" class="btn btn-secondary" onclick="history.back()">
+                 <i class="fa fa-rotate-back"></i> Back
+            </button>
+           {% if category.getCountProduct == 0 %}
+                <button type="submit" class="btn btn-lg btn-danger" onclick="return confirm('โปรดยืนยันการลบประเภทสินค้านี้' )">
+                     <i class="fa-solid fa-trash"></i> Delete
+                </button>
+            {% else %}
+                <button class="btn btn-lg btn-danger disabled">
+                     ประเภทสินค้านี้มีสินค้าบางรายการปรากฎอยู่ในระบบแล้ว ไม่สามารถลบได้
+                </button>
+            {% endif %}
+        </p>
+    </form>
+{% endblock %}
