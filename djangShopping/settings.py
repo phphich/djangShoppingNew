@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'djangShopping.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dbtest2',
+        'NAME': 'dbtest',
         'USER': 'bisdev',
         'PASSWORD': '12345',
         'HOST': 'localhost',

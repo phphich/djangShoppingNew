@@ -43,9 +43,12 @@
         <i class="fab fa-line"></i> Send Sticker to Line Notify </a>
     <a href="{% url 'sendLineImage' %}" class="list-group-item list-group-item-action list-group-item-light text-success">
         <i class="fab fa-line"></i> Send Image to Line Notify </a>
-    <a href="{% url 'thaiPdfReport' %}" target="_blank"
+    <a href="{% url 'pdfThaiReport' %}" target="_blank"
        class="list-group-item list-group-item-action list-group-item-light text-danger">
-        <i class="fas fa-file-pdf"></i> Thai Pdf Report </a>
+        <i class="fas fa-file-pdf"></i> PDF Thai Report </a>
+    <a href="{% url 'pdfProductReport' %}" target="_blank"
+       class="list-group-item list-group-item-action list-group-item-light text-danger">
+        <i class="fas fa-file-pdf"></i> PDF Product Report </a>
     <a href="{% url 'dashboardBarGraph' %}"
        class="list-group-item list-group-item-action list-group-item-light text-primary">
         <i class="fas fa-chart-bar"></i> Dashboard - Bar Graph </a>

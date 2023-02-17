@@ -12,15 +12,27 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 def chkPermission(request):
-    userStatus = request.session['userStatus']
-    if userStatus == 'customer':
-        messages.add_message(request, messages.WARNING, "ท่านกำลังเข้าใช้ในส่วนที่ไม่ได้รับอนุญาต!!!")
-        return False
+    if 'userStatus' in request.session:
+        userStatus = request.session['userStatus']
+        if userStatus == 'customer':
+            messages.add_message(request, messages.WARNING, "ท่านกำลังเข้าใช้ในส่วนที่ไม่ได้รับอนุญาต!!!")
+            return False
+        else:
+            return True
     else:
-        return True
+        if Employees.objects.count() != 0:
+            return False
+        else:
+            return True
 
 def home(request):
-    return render(request, 'home.html')
+    countEmp = Employees.objects.count()
+    print("countEmp:" + str(countEmp))
+    if countEmp == 0:
+        messages.add_message(request, messages.INFO, "เพิ่มข้อมูลพนักงาน สำหรับการเข้าใช้ครั้งแรก")
+        return redirect('employeeNew')
+    else:
+        return render(request, 'home.html')
 
 @login_required(login_url='userAuthen')
 def categoryList(request):
@@ -209,7 +221,7 @@ def employeeList(request):
     context = {'employees': employees}
     return render(request, 'crud/employeeList.html', context)
 
-@login_required(login_url='userAuthen')
+# @login_required(login_url='userAuthen')
 def employeeNew(request):
     if not chkPermission(request):
         return redirect('home')
@@ -747,10 +759,24 @@ from django.template.loader import get_template
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
-def thaiPdfReport(request):
+def pdfThaiReport(request):
     pdfmetrics.registerFont(TTFont('THSarabunNew', 'thsarabunnew-webfont.ttf'))
-    template = get_template('thaiPdfReport.html')
+    template = get_template('pdfThaiReport.html')
     context = {"Name" : "อาจารย์พิชญะภาคย์  พิพิธพัฒน์ไพสิฐ"}
+    html = template.render(context)
+    response = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
+    if not pdf.err:
+        return HttpResponse(response.getvalue(), content_type='application/pdf')
+    else:
+        return HttpResponse("<h1><b>เกิดข้อผิดพลาด!!!</b> ไม่สามารถสร้างเอกสาร PDF ได้...</h2>", status=400)
+
+def pdfProductReport(request):
+    pdfmetrics.registerFont(TTFont('THSarabunNew', 'thsarabunnew-webfont.ttf'))
+    pdfmetrics.registerFont(TTFont('THSarabunNew-Bold', 'thsarabunnew_bold-webfont.ttf'))
+    template = get_template('pdfProductReport.html')
+    products=Products.objects.all()
+    context = {"products": products}
     html = template.render(context)
     response = BytesIO()
     pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
@@ -840,18 +866,21 @@ def dashboardAll(request):
     productsAll = Products.objects.all()
     products = []
     amounts = []
+    productCount = len(productsAll)
+    totalSale=0.00
     for item in productsAll:
         products.append(item.name)
         amounts.append(item.getSaleAmount())
+        totalSale += item.getSaleAmount()
     df_product = pd.DataFrame({"Product": products, "Amount": amounts}, columns=['Product', 'Amount'])
     fig_bar = px.bar(df_product, x='Product', y='Amount', title="แผนภูมิแท่งแสดงยอดขายแยกตามรายชื่อสินค้า")
-    fig_bar.update_layout(autosize=False, width=430, height=300,
+    fig_bar.update_layout(autosize=False, width=430, height=400,
                           margin=dict(l=10, r=10, b=100, t=100, pad=5),
                           paper_bgcolor="aliceblue", )
     chart_bar = fig_bar.to_html()
 
     fig_pie = px.pie(df_product, hole=.3, names='Product', values='Amount', title="แผนภูมิวงกลมแสดงยอดขายแยกตามรายชื่อสินค้า")
-    fig_pie.update_layout(autosize=False, width=430, height=300,
+    fig_pie.update_layout(autosize=False, width=430, height=400,
                           margin=dict(l=10, r=10, b=100, t=100, pad=5),
                           paper_bgcolor="aliceblue", )
     chart_pie = fig_pie.to_html()
@@ -866,15 +895,16 @@ def dashboardAll(request):
             sales[preiod] = sale.amount
     df_sale = pd.DataFrame({"Month_Year": sales.keys(), "Amount": sales.values()}, columns=['Month_Year', 'Amount'])
     fig_line = px.line(df_sale, x='Month_Year', y='Amount', title='กราฟเส้นแสดงยอดขายแยกตามเดือน-ปี')
-    fig_line.update_layout(autosize=False, width=430, height=300,
+    fig_line.update_layout(autosize=False, width=430, height=400,
                            margin=dict(l=10, r=10, b=100, t=100, pad=5),
                            paper_bgcolor="aliceblue", )
     chart_line = fig_line.to_html()
     fig_area = px.area(df_sale, x='Month_Year', y='Amount', title='กราฟพื้นที่แสดงยอดขายแยกตามเดือน-ปี')
-    fig_area.update_layout(autosize=False, width=430, height=300,
+    fig_area.update_layout(autosize=False, width=430, height=400,
                            margin=dict(l=10, r=10, b=100, t=100, pad=5),
                            paper_bgcolor="aliceblue", )
     chart_area = fig_area.to_html()
     context = {'chart_bar': chart_bar, 'chart_pie': chart_pie,
-               'chart_line':chart_line, 'chart_area':chart_area}
-    return render(request, 'dashboard.html', context)
+               'chart_line':chart_line, 'chart_area':chart_area,
+               "productCount":productCount, "totalSale":totalSale}
+    return render(request, 'dashboardMultiple.html', context)

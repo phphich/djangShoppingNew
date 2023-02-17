@@ -1,0 +1,41 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="{% static 'stylesheets/bt502/css/bootstrap.css' %}">
+    <script src="{% static 'stylesheets/bt502/js/bootstrap.bundle.js'%}"></script>
+    <script type="text/javascript" src="{% static 'stylesheets/layout/scripts/jquery.min.js'%}"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <title>ตัวอย่างรายงานภาษาไทย</title>
+</head>
+<body>
+    <h1 align="center">
+        <b style="font-size:25px;font-weight: bold">
+            รายงานสินค้าคงคลัง
+        </b>
+    </h1>
+    <h2 align="center">
+        บริษัท DigiTech Co.,Ltd. <br>
+        123/4-5 ถ.ศรีจันทร์ ต.ในเมือง อ.เมือง จ.ขอนแก่น 40000, โทรศัพท์:043-352315
+    </h2>
+    <hr align="center" width="300">
+        <table width="90%" border="1" align="center">
+            <tr>
+                <th>รหัสสินค้า</th><th>ชื่อสินค้า</th><th>ราคาต่อหน่วย</th><th>คงเหลือ</th> <th>ยอดขาย</th>
+            </tr>
+            {% for product in products %}
+                <tr>
+                    <td align="center">{{ product.pid }}</td>
+                    <td>{{ product.name }}</td>
+                    <td align="right">{{ product.price | floatformat:2}}</td>
+                    <td align="center">{{ product.net }}</td>
+                    <td align="right">{{ product.getSaleAmount | floatformat:2 }} </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="4" align="center"><b>รวมจำนวน {{ products.count }} รายการ</b></td>
+            </tr>
+        </table>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h2 class="text-primary text-center">Dashboard สรุปข้อมูลสินค้า/การขาย</h2>
+    <br>
+    <div class="row text-center">
+        <div class="col-md-5 text-center">
+            <center>
+            <div class="card border-primary bg-primary text-white" style="max-width: 20rem;height:12rem">
+              <div class="card-header text-start">จำนวนรายการสินค้า</div>
+              <div class="card-body">
+                <h5 class="card-title text-white " style="font-size: 70px">{{ productCount }}</h5>
+              </div>
+            </div>
+            </center>
+        </div>
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-5 text-center">
+            <center>
+            <div class="card border-success  bg-success text-white" style="max-width: 18rem;height:12rem">
+              <div class="card-header text-start">ยอดขายสะสม</div>
+              <div class="card-body text-primary">
+                <h5 class="card-title text-white " style="font-size: 50px">{{ totalSale | floatformat:2 }}</h5>
+              </div>
+            </div>
+            </center>
+
+
+        </div>
+    </div>
+    <br>
+    <div class="row text-center">
+        <div class="col-md-5">
+            {{ chart_bar | safe }}
+        </div>
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-5">
+            {{ chart_pie | safe }}
+        </div>
+    </div>
+    <br>
+    <div class="row text-center">
+        <div class="col-md-5">
+            {{ chart_line | safe }}
+        </div>
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-5">
+            {{ chart_area | safe }}
+        </div>
+    </div>
+{% endblock %}

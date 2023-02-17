@@ -54,7 +54,8 @@ urlpatterns = [
     path('sendLineSticker', views.sendLineSticker, name='sendLineSticker'),
     path('sendLineImage', views.sendLineImage, name='sendLineImage'),
     #sample Generate Thai PDF Report
-    path('thaiPdfReport', views.thaiPdfReport, name='thaiPdfReport'),
+    path('pdfThaiReport', views.pdfThaiReport, name='pdfThaiReport'),
+    path('pdfProductReport', views.pdfProductReport, name='pdfProductReport'),
     #sample Dashboard Chart
     path('dashboardBarGraph', views.dashboardBarGraph, name='dashboardBarGraph'),
     path('dashboardPieGraph', views.dashboardPieGraph, name='dashboardPieGraph'), path('dashboardBarGraph', views.dashboardBarGraph, name='dashboardBarGraph'),
