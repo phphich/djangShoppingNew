@@ -8,6 +8,6 @@
 # ใช้คำสั่ง  python manage.py migrate เพื่อสร้างตารางข้อมูลใน mySQL,  และ python manage.py createuperuser เพื่อสร้างบัญชีผู้ดูแลระบบ 
 # ใช้คำสั่ง python manage.py runserver 0.0.0.0:80
 # เปิด browser ไปที่ localhost
-# เพิ่มพนักงานงานในเมนู Employee
+# เพิ่มพนักงานงานในเมนู Employee (เข้าไปครั้งแรก ระบบจะบังคับให้เพิ่ม Employee 1 คน ทันที)
 # สมัครสมาชิกที่เมนู Customer Registation
 # ทดสอบสั่งซื้อสินค้าและอื่น ๆ
