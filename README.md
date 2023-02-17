@@ -1,5 +1,4 @@
-# ติดตั้งโปรเจ็กต์ djangShopping โดยใช้คำสั่ง git clone https://github.com/phphich/djangShoppingNew.git
-(แนะนำให้ clone ไว้ในโฟล์เดอร์ชื่อ ...\djangShopping ) 
+# ติดตั้งโปรเจ็กต์ djangShopping โดยใช้คำสั่ง git clone https://github.com/phphich/djangShoppingNew.git (แนะนำให้ clone ไว้ในโฟล์เดอร์ชื่อ ...\djangShopping ) 
 # ติดตั้ง Package ต่าง ๆ ของโปรเจ็กต์ โดยใช้คำสั่ง pip install -r requirements.txt
 # Log in เข้า mySQL โดยใช้ root 
 # สร้างฐานข้อมูลใน mySQL ชื่อ dbtest
