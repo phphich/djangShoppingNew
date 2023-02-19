@@ -66,7 +66,6 @@ class EmployeesForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control',  'size':55, 'maxlength':50}),
             'birthdate':forms.NumberInput(attrs={'class': 'form-control',   'type': 'date'}),
             'position': forms.Select(choices=STATUS_CHOICES, attrs={'class': 'form-control'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control', 'size': 15, 'maxlength': 30}),
          }
 
         labels = {
@@ -74,7 +73,6 @@ class EmployeesForm(forms.ModelForm):
             'name': 'ชื่อพนักงาน',
             'birthdate': 'วันเดือนปีเกิด',
             'position': 'ตำแหน่ง',
-            'password': 'รหัสผ่าน',
          }
 
     def updateForm(self):

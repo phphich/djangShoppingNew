@@ -21,6 +21,7 @@ def chkPermission(request):
             return True
     else:
         if Employees.objects.count() != 0:
+            messages.add_message(request, messages.WARNING, "ท่านกำลังเข้าใช้ในส่วนที่ไม่ได้รับอนุญาต!!!")
             return False
         else:
             return True
@@ -432,6 +433,7 @@ def userAuthen(request):
                 request.session['userName'] = emp.name
                 request.session['userStatus'] = emp.position
             messages.add_message(request, messages.INFO, "Login success..")
+
             if request.session.get('orderActive'):
                 del request.session['orderActive']
                 return redirect('checkout')
@@ -730,11 +732,12 @@ import requests, json
 def sendNotify(message):
     url = "https://notify-api.line.me/api/notify"
     LINE_ACCESS_TOKEN = "Lbk3vjzgD7fi9iicQKlxm0yciMwB4zlnR8i2J6pw41x"  # token from your line notify web
+    # RlRGB46r5M5phZDKhq3xOLRci4v3KQsukhvUqijyzyx
     LINE_HEADERS = {'Content-Type': 'application/x-www-form-urlencoded', "Authorization": "Bearer " + LINE_ACCESS_TOKEN}
     return requests.post(url, headers=LINE_HEADERS, data=message)
 
 def sendLineMessage(request):
-    sMessage = "Django Message for You"  # ข้อความที่ต้องการส่ง
+    sMessage = {'message':"สวัสดี เราส่งของออเดอร์หมายเลข #555500055 แล้วนะ"}  # ข้อความที่ต้องการส่ง
     sendNotify(sMessage)
     messages.add_message(request, messages.INFO, "Send Message to Line Notify was Successfully.")
     return redirect('home')
@@ -746,7 +749,7 @@ def sendLineSticker(request):
     return redirect('home')
 
 def sendLineImage(request):
-    fileUrlThumb="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20200221235734/Django-tutorial-learn-.png"
+    fileUrlThumb= "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20200221235734/Django-tutorial-learn-.png"
     fileUrlFull="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20200221235734/Django-tutorial-learn-.png"
     sFile = {'message':'File', 'imageThumbnail':fileUrlThumb, 'imageFullsize':fileUrlFull}
     sendNotify(sFile)
@@ -773,7 +776,6 @@ def pdfThaiReport(request):
 
 def pdfProductReport(request):
     pdfmetrics.registerFont(TTFont('THSarabunNew', 'thsarabunnew-webfont.ttf'))
-    pdfmetrics.registerFont(TTFont('THSarabunNew-Bold', 'thsarabunnew_bold-webfont.ttf'))
     template = get_template('pdfProductReport.html')
     products=Products.objects.all()
     context = {"products": products}
@@ -786,11 +788,12 @@ def pdfProductReport(request):
         return HttpResponse("<h1><b>เกิดข้อผิดพลาด!!!</b> ไม่สามารถสร้างเอกสาร PDF ได้...</h2>", status=400)
 
 # pip install plotly
-# #pip install pandas
+# pip install pandas
+
 import plotly.graph_objs as go
+
 import pandas as pd
 import plotly.express as px
-
 def dashboardBarGraph(request):
     productsAll = Products.objects.all()
     products = []
@@ -872,7 +875,9 @@ def dashboardAll(request):
         products.append(item.name)
         amounts.append(item.getSaleAmount())
         totalSale += item.getSaleAmount()
+
     df_product = pd.DataFrame({"Product": products, "Amount": amounts}, columns=['Product', 'Amount'])
+
     fig_bar = px.bar(df_product, x='Product', y='Amount', title="แผนภูมิแท่งแสดงยอดขายแยกตามรายชื่อสินค้า")
     fig_bar.update_layout(autosize=False, width=430, height=400,
                           margin=dict(l=10, r=10, b=100, t=100, pad=5),
@@ -894,11 +899,13 @@ def dashboardAll(request):
         else:
             sales[preiod] = sale.amount
     df_sale = pd.DataFrame({"Month_Year": sales.keys(), "Amount": sales.values()}, columns=['Month_Year', 'Amount'])
+
     fig_line = px.line(df_sale, x='Month_Year', y='Amount', title='กราฟเส้นแสดงยอดขายแยกตามเดือน-ปี')
     fig_line.update_layout(autosize=False, width=430, height=400,
                            margin=dict(l=10, r=10, b=100, t=100, pad=5),
                            paper_bgcolor="aliceblue", )
     chart_line = fig_line.to_html()
+
     fig_area = px.area(df_sale, x='Month_Year', y='Amount', title='กราฟพื้นที่แสดงยอดขายแยกตามเดือน-ปี')
     fig_area.update_layout(autosize=False, width=430, height=400,
                            margin=dict(l=10, r=10, b=100, t=100, pad=5),
