@@ -1,6 +1,6 @@
 # ติดตั้งโปรเจ็กต์ djangShopping โดยใช้คำสั่ง git clone https://github.com/phphich/djangShoppingNew.git (แนะนำให้ clone ไว้ในโฟล์เดอร์ชื่อ ...\djangShopping ) 
 # สร้าง virtual environment ให้เรียบร้อย
-# ติดตั้ง Package ต่าง ๆ ของโปรเจ็กต์ โดยใช้คำสั่ง pip install -r requirements.txt
+# ติดตั้ง Package ต่าง ๆ ของโปรเจ็กต์ โดยใช้คำสั่ง pip install -r req.txt
 # Log in เข้า mySQL โดยใช้ root 
 # สร้างฐานข้อมูลใน mySQL ชื่อ dbtest
 # สร้าง user ชื่อ bisdev พร้อมกำหนด รหัสผ่าน 12345 หรือชื่อและรหัสผ่านตามที่ต้องการก็ได้ 
